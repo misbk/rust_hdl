@@ -8,7 +8,7 @@ use std::fmt::{Debug, Display, Formatter};
 use std::ops::Deref;
 
 use super::*;
-use crate::ast::InterfaceType;
+use crate::ast::{Expression, InterfaceType};
 use crate::ast::Mode;
 use crate::ast::ObjectClass;
 
@@ -138,7 +138,7 @@ pub struct Object<'a> {
     pub class: ObjectClass,
     pub iface: Option<ObjectInterface<'a>>,
     pub subtype: Subtype<'a>,
-    pub has_default: bool,
+    pub default: Option<WithTokenSpan<Expression>>,
 }
 
 impl<'a> Object<'a> {
@@ -147,12 +147,13 @@ impl<'a> Object<'a> {
             class: ObjectClass::Constant,
             iface: Some(ObjectInterface::Parameter(InterfaceMode::Simple(Mode::In))),
             subtype,
-            has_default: false,
+            default: None,
         }
     }
 
     pub(crate) fn with_default(mut self) -> Self {
-        self.has_default = true;
+        // FIXME: reimplement correctly
+        // self.has_default = true;
         self
     }
 

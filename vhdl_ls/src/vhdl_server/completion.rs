@@ -90,10 +90,24 @@ impl VHDLServer {
                     let mut interface_ent = |elements: Vec<InterfaceEnt>, purpose: &str| {
                         line += &*format!("\n{purpose} map (\n");
                         for (i, generic) in elements.iter().enumerate() {
-                            line += &*format!(
-                                "\t{} => ${{{}:{}}}",
-                                generic.designator, idx, generic.designator
-                            );
+                            if let AnyEntKind::Object(obj) = &generic.kind {
+                                if let Some(s) = &obj.default {
+                                    line += &*format!(
+                                        "\t{} => ${{{}|{},{}|}}",
+                                        generic.designator, idx, s.item, generic.designator
+                                    )
+                                } else {
+                                    line += &*format!(
+                                        "\t{} => ${{{}:{}}}",
+                                        generic.designator, idx, generic.designator
+                                    );
+                                }
+                            } else {
+                                line += &*format!(
+                                    "\t{} => ${{{}:{}}}",
+                                    generic.designator, idx, generic.designator
+                                );
+                            }
                             idx += 1;
                             if i != elements.len() - 1 {
                                 line += ","

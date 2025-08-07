@@ -1160,7 +1160,7 @@ impl<'a> AnalyzeContext<'a, '_> {
                 class: ObjectClass::Signal,
                 iface: None,
                 subtype: Subtype::new(typ),
-                has_default: false,
+                default: None,
             }),
             None,
             name_pos,

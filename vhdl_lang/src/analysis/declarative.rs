@@ -435,7 +435,7 @@ impl<'a> AnalyzeContext<'a, '_> {
                             AnyEntKind::Object(Object {
                                 class: object_decl.class,
                                 iface: None,
-                                has_default: object_decl.expression.is_some(),
+                                default: object_decl.expression.clone(),
                                 subtype,
                             })
                         };
@@ -997,7 +997,7 @@ impl<'a> AnalyzeContext<'a, '_> {
                         class: ObjectClass::Signal,
                         iface: None,
                         subtype: Subtype::new(self.universal_integer().into()),
-                        has_default: false,
+                        default: None,
                     }),
                     object_decl.span,
                 )
@@ -1015,7 +1015,7 @@ impl<'a> AnalyzeContext<'a, '_> {
                             mode.mode.as_ref().map(|mode| mode.item).unwrap_or_default(),
                         )),
                         subtype,
-                        has_default: mode.expression.is_some(),
+                        default: mode.expression.clone(),
                     }
                 }
                 ModeIndication::View(view) => {
@@ -1025,7 +1025,7 @@ impl<'a> AnalyzeContext<'a, '_> {
                         class: ObjectClass::Signal,
                         iface: Some(ObjectInterface::Port(InterfaceMode::View(view_ent))),
                         subtype,
-                        has_default: false,
+                        default: None,
                     }
                 }
             };

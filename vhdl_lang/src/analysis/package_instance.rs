@@ -387,14 +387,14 @@ impl<'a> AnalyzeContext<'a, '_> {
             class,
             iface,
             subtype,
-            has_default,
+            default,
         } = obj;
 
         Object {
             class: *class,
             iface: iface.clone(),
             subtype: self.map_subtype(mapping, *subtype, scope),
-            has_default: *has_default,
+            default: default.clone(),
         }
     }
 

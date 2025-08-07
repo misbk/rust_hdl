@@ -55,7 +55,7 @@ impl<'a> InterfaceEnt<'a> {
 
     pub fn has_default(&self) -> bool {
         match self {
-            InterfaceEnt::Object(o) => o.kind().has_default,
+            InterfaceEnt::Object(o) => o.kind().default.is_some(),
             _ => false,
         }
     }
@@ -240,8 +240,8 @@ impl<'a> ParameterEnt<'a> {
     }
 
     pub fn has_default(&self) -> bool {
-        if let AnyEntKind::Object(Object { has_default, .. }) = self.0.kind() {
-            *has_default
+        if let AnyEntKind::Object(Object { default, .. }) = self.0.kind() {
+            default.is_some()
         } else {
             false
         }
