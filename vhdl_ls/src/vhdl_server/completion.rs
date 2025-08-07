@@ -62,11 +62,15 @@ impl VHDLServer {
                 };
                 let template = if self.client_supports_snippets() {
                     let mut line = if is_component_instantiation {
-                        format!("${{1:{}_inst}}: {}", ent.designator, ent.designator)
+                        format!(
+                            "${{1:u_{}}}: {}",
+                            format!("{}", ent.designator).to_uppercase(),
+                            ent.designator
+                        )
                     } else {
                         format!(
-                            "${{1:{}_inst}}: entity ${{2|{}|}}.{}",
-                            ent.designator,
+                            "${{1:u_{}}}: entity ${{2|{}|}}.{}",
+                            format!("{}", ent.designator).to_uppercase(),
                             library_names.join(","),
                             ent.designator
                         )
@@ -84,10 +88,10 @@ impl VHDLServer {
                     let (ports, generics) = region.ports_and_generics();
                     let mut idx = 4;
                     let mut interface_ent = |elements: Vec<InterfaceEnt>, purpose: &str| {
-                        line += &*format!("\n {purpose} map(\n");
+                        line += &*format!("\n{purpose} map (\n");
                         for (i, generic) in elements.iter().enumerate() {
                             line += &*format!(
-                                "    {} => ${{{}:{}}}",
+                                "\t{} => ${{{}:{}}}",
                                 generic.designator, idx, generic.designator
                             );
                             idx += 1;
